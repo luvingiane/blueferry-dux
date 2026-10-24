@@ -44,7 +44,8 @@ Scope {
             statusSections: get("statusSections", Order.SECTION_DEFAULT),
             emojiFont: String(get("emojiFont", "Apple Color Emoji") || ""),
             notificationClick: String(get("notificationClick", "app") || "app"),
-            onlineArtwork: get("onlineArtwork", true) !== false
+            onlineArtwork: get("onlineArtwork", true) !== false,
+            airplayDuplicate: String(get("airplayDuplicate", "hide") || "hide")
         }
     }
 
@@ -53,15 +54,6 @@ Scope {
         function onPluginDataChanged(changedPluginId) {
             if (changedPluginId === root.pluginId)
                 root.loadConfig()
-        }
-    }
-
-    // plugin_settings.json edited by hand is read again by the shell, which
-    // does not announce it to the plugins.
-    Connections {
-        target: SettingsData
-        function onPluginSettingsChanged() {
-            root.loadConfig()
         }
     }
 
@@ -1024,6 +1016,117 @@ Scope {
         refreshMessages()
     }
 
+    // --- One player in the shell for AirPlay from the iPhone ----------------
+
+    // With BlueFerry's media control on and the iPhone playing over AirPlay
+    // to shairport-sync, the shell sees the same track twice: BlueFerry's
+    // MPRIS player ("iPhone (BlueFerry)": working controls and position, no
+    // artwork) and shairport-sync's ("Shairport Sync": artwork, position
+    // stuck at 0). While both play the same track the daemon either hides
+    // Shairport Sync from the shell's players ("hide") or makes BlueFerry's
+    // the preferred one ("prefer", which keeps the artwork). Whatever it
+    // changes in the shell's settings it undoes when the tracks part, when
+    // the option changes and when the plugin stops.
+    readonly property string airplayDuplicate: config.airplayDuplicate || "hide"
+    readonly property string shairportToken: "shairport-sync"   // matches its desktop entry
+
+    readonly property var blueferryMpris: {
+        const players = Mpris.players.values
+        for (let i = 0; i < players.length; ++i) {
+            if (players[i] && /\.blueferry/i.test(players[i].dbusName || ""))
+                return players[i]
+        }
+        return null
+    }
+
+    // The same track on both, by the shell's own comparison.
+    readonly property bool sameTrackTwice: !!shairport && !!blueferryMpris
+        && shairport.playbackState !== MprisPlaybackState.Stopped
+        && blueferryMpris.playbackState !== MprisPlaybackState.Stopped
+        && MprisController.isSameTrack(shairport, blueferryMpris)
+
+    // sameTrackTwice, steadied: on a track change the two players update a
+    // moment apart, so a mismatch only counts once it lasts.
+    property bool duplicate: false
+    onSameTrackTwiceChanged: {
+        if (sameTrackTwice) {
+            duplicateRelease.stop()
+            duplicate = true
+        } else {
+            duplicateRelease.restart()
+        }
+    }
+    Timer {
+        id: duplicateRelease
+        interval: 8000
+        onTriggered: root.duplicate = root.sameTrackTwice
+    }
+
+    property bool mediaModReady: false   // the players have had time to appear
+    readonly property bool hideShairport: mediaModReady && duplicate && airplayDuplicate === "hide"
+    readonly property bool preferBlueferry: mediaModReady && duplicate && airplayDuplicate === "prefer"
+    onHideShairportChanged: applyMediaMod()
+    onPreferBlueferryChanged: applyMediaMod()
+
+    Timer {
+        interval: 4000
+        running: true
+        onTriggered: {
+            root.mediaModReady = true
+            root.applyMediaMod()
+        }
+    }
+
+    // What the daemon changed, kept in the plugin's state so that a shell
+    // that stopped without cleaning up is put right on the next start:
+    // {excluded: bool, pinned: string, previousPin: string}.
+    function mediaModState() {
+        const state = pluginService ? pluginService.loadPluginState(pluginId, "mediaMod", {}) : {}
+        return state && typeof state === "object" ? state : {}
+    }
+
+    function saveMediaModState(state) {
+        if (pluginService)
+            pluginService.savePluginState(pluginId, "mediaMod", state)
+    }
+
+    function applyMediaMod() {
+        const state = Object.assign({}, mediaModState())
+        const token = shairportToken
+        const excluded = (SettingsData.mediaExcludePlayers || []).map(entry => String(entry))
+        const listed = excluded.some(entry => entry.trim().toLowerCase() === token)
+        // Only an exclusion the daemon added is taken away again.
+        if (hideShairport && !listed) {
+            SettingsData.set("mediaExcludePlayers", excluded.concat([token]))
+            state.excluded = true
+        } else if (!hideShairport && listed && state.excluded) {
+            SettingsData.set("mediaExcludePlayers", excluded.filter(entry => entry.trim().toLowerCase() !== token))
+            state.excluded = false
+        } else if (!listed) {
+            state.excluded = false
+        }
+
+        const identity = blueferryMpris ? blueferryMpris.identity || "" : state.pinned || ""
+        if (preferBlueferry && identity !== "" && MprisController.pinnedIdentity !== identity) {
+            if (!state.pinned)
+                state.previousPin = MprisController.pinnedIdentity || ""
+            MprisController.setPinned(identity)
+            state.pinned = identity
+        } else if (!preferBlueferry && state.pinned) {
+            // The pin goes back unless someone changed it meanwhile.
+            if (MprisController.pinnedIdentity === state.pinned)
+                MprisController.setPinned(state.previousPin || "")
+            state.pinned = ""
+            state.previousPin = ""
+        }
+        saveMediaModState(state)
+    }
+
+    function undoMediaMod() {
+        mediaModReady = false
+        applyMediaMod()
+    }
+
     // --- Sharing the daemon with the widgets --------------------------------
 
     Connections {
@@ -1051,6 +1154,7 @@ Scope {
     }
 
     Component.onDestruction: {
+        undoMediaMod()
         if (pluginService && pluginService.getGlobalVar(pluginId, "controller", null) === root)
             pluginService.setGlobalVar(pluginId, "controller", null)
     }

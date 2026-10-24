@@ -242,6 +242,21 @@
   "The iPhone does not send artwork over Bluetooth. During AirPlay it comes from shairport-sync; otherwise the artist and title are looked up with the iTunes API.": {
     "The iPhone does not send artwork over Bluetooth. During AirPlay it comes from shairport-sync; otherwise the artist and title are looked up with the iTunes API.": "Via Bluetooth l'iPhone non manda la copertina. Durante AirPlay arriva da shairport-sync; altrimenti si cerca artista e titolo sull'API di iTunes."
   },
+  "AirPlay from the iPhone in the shell's player": {
+    "AirPlay from the iPhone in the shell's player": "AirPlay dall'iPhone nel player della shell"
+  },
+  "While shairport-sync plays the same track as BlueFerry's player, the shell lists it twice. BlueFerry's has the working controls, shairport-sync's has the artwork.": {
+    "While shairport-sync plays the same track as BlueFerry's player, the shell lists it twice. BlueFerry's has the working controls, shairport-sync's has the artwork.": "Mentre shairport-sync suona lo stesso brano del player di BlueFerry, la shell lo elenca due volte. Quello di BlueFerry ha i comandi funzionanti, quello di shairport-sync la copertina."
+  },
+  "Show only BlueFerry's player (no artwork there)": {
+    "Show only BlueFerry's player (no artwork there)": "Mostra solo il player di BlueFerry (lì senza copertina)"
+  },
+  "Prefer BlueFerry's player, keep the artwork": {
+    "Prefer BlueFerry's player, keep the artwork": "Preferisci il player di BlueFerry, con la copertina"
+  },
+  "Leave both": {
+    "Leave both": "Lasciali entrambi"
+  },
   "Emoji font": {
     "Emoji font": "Font delle emoji"
   },

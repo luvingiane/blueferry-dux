@@ -98,6 +98,29 @@ di iTunes (Apple vede i titoli cercati).
 I comandi del player seguono l'elenco che l'iPhone annuncia a BlueFerry;
 quando l'elenco è vuoto si provano comunque e un rifiuto compare nel popup.
 
+### Un solo player per AirPlay dall'iPhone
+
+Con il player MPRIS di BlueFerry attivo (`blueferry media enable-mpris`) e
+l'iPhone che suona in AirPlay su shairport-sync, la shell vede lo stesso brano
+due volte: "iPhone (BlueFerry)", con comandi e posizione funzionanti ma senza
+copertina, e "Shairport Sync", con la copertina ma la posizione ferma a 0.
+Finché i due suonano lo stesso brano (secondo il confronto della shell stessa,
+stabilizzato per 8 s ai cambi di brano) il plugin, a seconda
+dell'impostazione:
+
+- **nasconde Shairport Sync** (predefinito): aggiunge `shairport-sync` ai
+  player esclusi della shell, così resta solo quello di BlueFerry, senza
+  copertina;
+- **preferisce il player di BlueFerry**: lo fissa, così il widget multimediale
+  della shell comanda l'iPhone e prende comunque la copertina da
+  shairport-sync, mentre l'elenco dei player li mostra entrambi;
+- oppure li lascia entrambi.
+
+Annulla la modifica quando i brani si separano, quando cambia l'impostazione e
+quando il plugin si ferma; un'esclusione o un player fissato da te restano
+come sono. AirPlay da un altro dispositivo, che non suona sull'iPhone, non
+viene toccato.
+
 Le foto dei contatti richiedono `BLUEFERRY_CONTACT_PHOTOS=true` in
 `~/.config/blueferry/local.env`, un riavvio di BlueFerry e
 `blueferry contacts-sync`.

@@ -97,6 +97,26 @@ Player controls follow the list of commands the iPhone announces to
 BlueFerry; when that list is empty they are tried anyway and a refusal shows
 up in the popup.
 
+### One player for AirPlay from the iPhone
+
+With BlueFerry's MPRIS player on (`blueferry media enable-mpris`) and the
+iPhone playing over AirPlay to shairport-sync, the shell sees the same track
+twice: "iPhone (BlueFerry)", with working controls and position but no
+artwork, and "Shairport Sync", with the artwork but the position stuck at 0.
+While the two play the same track (by the shell's own comparison, steadied
+for 8 s across track changes) the plugin, depending on the setting:
+
+- **hides Shairport Sync** (default): it adds `shairport-sync` to the shell's
+  excluded players, so only BlueFerry's player is left, without artwork;
+- **prefers BlueFerry's player**: it pins it, so the shell's media widget
+  controls the iPhone and still borrows shairport-sync's artwork, while the
+  player list keeps both;
+- or leaves both alone.
+
+It undoes the change when the tracks part, when the setting changes and when
+the plugin stops; an exclusion or pin you set yourself is left alone. AirPlay
+from another device, not playing on the iPhone, is never touched.
+
 Contact photos need `BLUEFERRY_CONTACT_PHOTOS=true` in
 `~/.config/blueferry/local.env`, a BlueFerry restart and
 `blueferry contacts-sync`.
