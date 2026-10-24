@@ -82,16 +82,11 @@ PluginSettings {
         defaultValue: true
     }
 
-    SelectionSetting {
-        settingKey: "airplayDuplicate"
-        label: I18n.trFor("iphoneStatus", "AirPlay from the iPhone in the shell's player")
-        description: I18n.trFor("iphoneStatus", "While shairport-sync plays the same track as BlueFerry's player, the shell lists it twice. BlueFerry's has the working controls, shairport-sync's has the artwork.")
-        options: [
-            { label: I18n.trFor("iphoneStatus", "Show only BlueFerry's player (no artwork there)"), value: "hide" },
-            { label: I18n.trFor("iphoneStatus", "Prefer BlueFerry's player, keep the artwork"), value: "prefer" },
-            { label: I18n.trFor("iphoneStatus", "Leave both"), value: "off" }
-        ]
-        defaultValue: "hide"
+    ToggleSetting {
+        settingKey: "airplayMainPlayer"
+        label: I18n.trFor("iphoneStatus", "BlueFerry's player for AirPlay from the iPhone")
+        description: I18n.trFor("iphoneStatus", "While shairport-sync plays the same track, the shell's player shows and controls BlueFerry's, with shairport-sync's artwork.")
+        defaultValue: true
     }
 
     StringSetting {

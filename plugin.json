@@ -2,7 +2,7 @@
     "id": "iphoneStatus",
     "name": "iPhone Status",
     "description": "Battery, signal, carrier, notifications, now playing and recent calls of the iPhone, read from BlueFerry",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "author": "Matt",
     "type": "composite",
     "capabilities": ["daemon", "dankbar-widget", "control-center", "iphone", "bluetooth"],

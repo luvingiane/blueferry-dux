@@ -97,26 +97,6 @@ Player controls follow the list of commands the iPhone announces to
 BlueFerry; when that list is empty they are tried anyway and a refusal shows
 up in the popup.
 
-### One player for AirPlay from the iPhone
-
-With BlueFerry's MPRIS player on (`blueferry media enable-mpris`) and the
-iPhone playing over AirPlay to shairport-sync, the shell sees the same track
-twice: "iPhone (BlueFerry)", with working controls and position but no
-artwork, and "Shairport Sync", with the artwork but the position stuck at 0.
-While the two play the same track (by the shell's own comparison, steadied
-for 8 s across track changes) the plugin, depending on the setting:
-
-- **hides Shairport Sync** (default): it adds `shairport-sync` to the shell's
-  excluded players, so only BlueFerry's player is left, without artwork;
-- **prefers BlueFerry's player**: it pins it, so the shell's media widget
-  controls the iPhone and still borrows shairport-sync's artwork, while the
-  player list keeps both;
-- or leaves both alone.
-
-It undoes the change when the tracks part, when the setting changes and when
-the plugin stops; an exclusion or pin you set yourself is left alone. AirPlay
-from another device, not playing on the iPhone, is never touched.
-
 Contact photos need `BLUEFERRY_CONTACT_PHOTOS=true` in
 `~/.config/blueferry/local.env`, a BlueFerry restart and
 `blueferry contacts-sync`.
@@ -139,6 +119,27 @@ and shows a Wi-Fi icon after the operator instead.
 
 The network type (LTE, 5G…) is not available: the iPhone's Bluetooth
 hands-free profile only reports status, carrier, signal and mode.
+
+## One player for AirPlay from the iPhone
+
+With BlueFerry's MPRIS player on (`blueferry media enable-mpris`) and the
+iPhone playing over AirPlay to shairport-sync, the shell sees the same track
+twice: "iPhone (BlueFerry)", with working controls and position but no
+artwork, and "Shairport Sync", with the artwork but the position stuck at 0.
+While the two play the same track (by the shell's own comparison, steadied
+for 8 s across track changes) the plugin pins BlueFerry's player and makes it
+the active one: the bar, the dash and the media OSD show and control the
+iPhone, with shairport-sync's artwork.
+
+Shairport Sync stays in the dash's player list: the shell borrows artwork
+only from a player it can see, and BlueFerry's player never has any, so
+hiding shairport-sync would lose it. When the active player changes in the
+middle of a track the shell shows the artwork in the bar from the next track
+on.
+
+The pin is undone when the tracks part, when the option is turned off and
+when the plugin stops; a pin you set yourself is left alone. AirPlay from
+another device, not playing on the iPhone, is never touched.
 
 ## Requirements
 

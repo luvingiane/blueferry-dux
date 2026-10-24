@@ -45,7 +45,7 @@ Scope {
             emojiFont: String(get("emojiFont", "Apple Color Emoji") || ""),
             notificationClick: String(get("notificationClick", "app") || "app"),
             onlineArtwork: get("onlineArtwork", true) !== false,
-            airplayDuplicate: String(get("airplayDuplicate", "hide") || "hide")
+            airplayMainPlayer: get("airplayMainPlayer", true) !== false
         }
     }
 
@@ -1021,14 +1021,15 @@ Scope {
     // With BlueFerry's media control on and the iPhone playing over AirPlay
     // to shairport-sync, the shell sees the same track twice: BlueFerry's
     // MPRIS player ("iPhone (BlueFerry)": working controls and position, no
-    // artwork) and shairport-sync's ("Shairport Sync": artwork, position
-    // stuck at 0). While both play the same track the daemon either hides
-    // Shairport Sync from the shell's players ("hide") or makes BlueFerry's
-    // the preferred one ("prefer", which keeps the artwork). Whatever it
-    // changes in the shell's settings it undoes when the tracks part, when
-    // the option changes and when the plugin stops.
-    readonly property string airplayDuplicate: config.airplayDuplicate || "hide"
-    readonly property string shairportToken: "shairport-sync"   // matches its desktop entry
+    // artwork) and shairport-sync's ("Shairport Sync": the artwork, position
+    // stuck at 0). While both play the same track the daemon pins
+    // BlueFerry's player in the shell, so the bar, the dash and the media
+    // OSD show and control that one. Shairport Sync stays among the shell's
+    // players: the shell borrows the artwork only from a player it can see,
+    // and for this track the artwork always comes from shairport-sync. The
+    // pin is undone when the tracks part, when the option is turned off and
+    // when the plugin stops.
+    readonly property bool airplayMainPlayer: config.airplayMainPlayer !== false
 
     readonly property var blueferryMpris: {
         const players = Mpris.players.values
@@ -1063,10 +1064,8 @@ Scope {
     }
 
     property bool mediaModReady: false   // the players have had time to appear
-    readonly property bool hideShairport: mediaModReady && duplicate && airplayDuplicate === "hide"
-    readonly property bool preferBlueferry: mediaModReady && duplicate && airplayDuplicate === "prefer"
-    onHideShairportChanged: applyMediaMod()
-    onPreferBlueferryChanged: applyMediaMod()
+    readonly property bool pinBlueferry: mediaModReady && duplicate && airplayMainPlayer
+    onPinBlueferryChanged: applyMediaMod()
 
     Timer {
         interval: 4000
@@ -1079,47 +1078,72 @@ Scope {
 
     // What the daemon changed, kept in the plugin's state so that a shell
     // that stopped without cleaning up is put right on the next start:
-    // {excluded: bool, pinned: string, previousPin: string}.
+    // {pinned: string, previousPin: string}. "excluded" comes from an earlier
+    // version, which hid Shairport Sync (and with it the artwork) instead.
     function mediaModState() {
         const state = pluginService ? pluginService.loadPluginState(pluginId, "mediaMod", {}) : {}
         return state && typeof state === "object" ? state : {}
     }
 
-    function saveMediaModState(state) {
-        if (pluginService)
-            pluginService.savePluginState(pluginId, "mediaMod", state)
-    }
-
     function applyMediaMod() {
         const state = Object.assign({}, mediaModState())
-        const token = shairportToken
-        const excluded = (SettingsData.mediaExcludePlayers || []).map(entry => String(entry))
-        const listed = excluded.some(entry => entry.trim().toLowerCase() === token)
-        // Only an exclusion the daemon added is taken away again.
-        if (hideShairport && !listed) {
-            SettingsData.set("mediaExcludePlayers", excluded.concat([token]))
-            state.excluded = true
-        } else if (!hideShairport && listed && state.excluded) {
+
+        if (state.excluded) {
+            const token = "shairport-sync"
+            const excluded = (SettingsData.mediaExcludePlayers || []).map(entry => String(entry))
             SettingsData.set("mediaExcludePlayers", excluded.filter(entry => entry.trim().toLowerCase() !== token))
-            state.excluded = false
-        } else if (!listed) {
-            state.excluded = false
+            delete state.excluded
         }
 
-        const identity = blueferryMpris ? blueferryMpris.identity || "" : state.pinned || ""
-        if (preferBlueferry && identity !== "" && MprisController.pinnedIdentity !== identity) {
+        const identity = blueferryMpris ? blueferryMpris.identity || "" : ""
+        if (pinBlueferry && identity !== "" && MprisController.pinnedIdentity !== identity) {
             if (!state.pinned)
                 state.previousPin = MprisController.pinnedIdentity || ""
             MprisController.setPinned(identity)
             state.pinned = identity
-        } else if (!preferBlueferry && state.pinned) {
+            // setPinned picks the active player again before the new pin is
+            // read back, so the current one would stay until the next track:
+            // switch now.
+            Qt.callLater(() => {
+                if (root.pinBlueferry && root.blueferryMpris && MprisController.activePlayer !== root.blueferryMpris)
+                    MprisController.setActivePlayer(root.blueferryMpris)
+            })
+        } else if (!pinBlueferry && state.pinned) {
             // The pin goes back unless someone changed it meanwhile.
             if (MprisController.pinnedIdentity === state.pinned)
                 MprisController.setPinned(state.previousPin || "")
             state.pinned = ""
             state.previousPin = ""
         }
-        saveMediaModState(state)
+        if (pluginService)
+            pluginService.savePluginState(pluginId, "mediaMod", state)
+    }
+
+    // The shell looks the artwork up again only when the active player
+    // changes track. On a new track BlueFerry's player is often first, while
+    // shairport-sync still has the old track and no cover: the shell finds
+    // no artwork and does not notice when shairport-sync gets it. So it is
+    // asked again whenever shairport-sync's track or cover changes.
+    Connections {
+        target: root.pinBlueferry ? root.shairport : null
+        function onTrackTitleChanged() {
+            artworkPoke.restart()
+        }
+        function onTrackArtUrlChanged() {
+            artworkPoke.restart()
+        }
+        function onMetadataChanged() {
+            artworkPoke.restart()
+        }
+    }
+    Timer {
+        id: artworkPoke
+        interval: 300
+        onTriggered: {
+            if (root.pinBlueferry && MprisController.activePlayer === root.blueferryMpris
+                    && typeof TrackArtService._updateArtUrl === "function")
+                TrackArtService._updateArtUrl()
+        }
     }
 
     function undoMediaMod() {
@@ -1135,6 +1159,8 @@ Scope {
             root.captureWrappers()
         }
     }
+
+
 
     function publish() {
         if (pluginService)
