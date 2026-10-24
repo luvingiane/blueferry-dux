@@ -1,0 +1,311 @@
+{
+  "Incoming": {
+    "Incoming": "In arrivo"
+  },
+  "Outgoing": {
+    "Outgoing": "In uscita"
+  },
+  "Missed": {
+    "Missed": "Persa"
+  },
+  "Call %1 back": {
+    "Call %1 back": "Richiama %1"
+  },
+  "No recent calls": {
+    "No recent calls": "Nessuna chiamata recente"
+  },
+  "BlueFerry's call history is empty or turned off (“blueferry call-history enable”).": {
+    "BlueFerry's call history is empty or turned off (“blueferry call-history enable”).": "Lo storico chiamate di BlueFerry è vuoto o spento («blueferry call-history enable»)."
+  },
+  "1 notification": {
+    "1 notification": "1 notifica"
+  },
+  "%1 notifications": {
+    "%1 notifications": "%1 notifiche"
+  },
+  "Clear the app notifications (SMS stay in BlueFerry)": {
+    "Clear the app notifications (SMS stay in BlueFerry)": "Cancella le notifiche delle app (gli SMS restano in BlueFerry)"
+  },
+  "Clear, also on the iPhone": {
+    "Clear, also on the iPhone": "Cancella, anche sull'iPhone"
+  },
+  "No notifications": {
+    "No notifications": "Nessuna notifica"
+  },
+  "SMS come from BlueFerry's history. App notifications show up here from the moment the plugin is running, because the iPhone does not send them again.": {
+    "SMS come from BlueFerry's history. App notifications show up here from the moment the plugin is running, because the iPhone does not send them again.": "Gli SMS arrivano dallo storico di BlueFerry. Le notifiche delle app compaiono qui da quando il plugin è attivo, perché l'iPhone non le invia di nuovo."
+  },
+  "Move up": {
+    "Move up": "Sposta su"
+  },
+  "Move down": {
+    "Move down": "Sposta giù"
+  },
+  "iPhone": {
+    "iPhone": "iPhone"
+  },
+  "Reading the status…": {
+    "Reading the status…": "Lettura dello stato in corso…"
+  },
+  "iPhone not connected (%1)": {
+    "iPhone not connected (%1)": "iPhone non connesso (%1)"
+  },
+  "iPhone not connected": {
+    "iPhone not connected": "iPhone non connesso"
+  },
+  "%1 %": {
+    "%1 %": "%1 %"
+  },
+  "%1 % (%2/5)": {
+    "%1 % (%2/5)": "%1 % (%2/5)"
+  },
+  "%1 s": {
+    "%1 s": "%1 s"
+  },
+  "%1 min": {
+    "%1 min": "%1 min"
+  },
+  "probably charging, 1 % every %1": {
+    "probably charging, 1 % every %1": "probabilmente in carica, 1 % ogni %1"
+  },
+  "probably charging": {
+    "probably charging": "probabilmente in carica"
+  },
+  "AirPlay": {
+    "AirPlay": "AirPlay"
+  },
+  "%1 · iPhone": {
+    "%1 · iPhone": "%1 · iPhone"
+  },
+  "now": {
+    "now": "ora"
+  },
+  "%1 min ago": {
+    "%1 min ago": "%1 min fa"
+  },
+  "yesterday %1": {
+    "yesterday %1": "ieri %1"
+  },
+  "Registered": {
+    "Registered": "Registrato"
+  },
+  "Roaming": {
+    "Roaming": "In roaming"
+  },
+  "Searching for a network…": {
+    "Searching for a network…": "Ricerca rete…"
+  },
+  "Not registered": {
+    "Not registered": "Non registrato"
+  },
+  "Registration denied": {
+    "Registration denied": "Registrazione negata"
+  },
+  "Unknown": {
+    "Unknown": "Sconosciuto"
+  },
+  "The gdbus command was not found": {
+    "The gdbus command was not found": "Comando gdbus non trovato"
+  },
+  "BlueFerry is not running": {
+    "BlueFerry is not running": "BlueFerry non è in esecuzione"
+  },
+  "BlueFerry is not responding": {
+    "BlueFerry is not responding": "BlueFerry non risponde"
+  },
+  "BlueFerry denied access to the status": {
+    "BlueFerry denied access to the status": "BlueFerry ha negato l'accesso allo stato"
+  },
+  "Error: %1": {
+    "Error: %1": "Errore: %1"
+  },
+  "The command exited with code %1": {
+    "The command exited with code %1": "Il comando è terminato con codice %1"
+  },
+  "BlueFerry's answer could not be read": {
+    "BlueFerry's answer could not be read": "Risposta di BlueFerry non leggibile"
+  },
+  "The BlueFerry daemon is not active": {
+    "The BlueFerry daemon is not active": "Il daemon BlueFerry non è attivo"
+  },
+  "Messages": {
+    "Messages": "Messaggi"
+  },
+  "Carrier: %1, Wi-Fi calling": {
+    "Carrier: %1, Wi-Fi calling": "Operatore: %1, chiamate Wi-Fi"
+  },
+  "Carrier: %1": {
+    "Carrier: %1": "Operatore: %1"
+  },
+  "Battery: %1, %2": {
+    "Battery: %1, %2": "Batteria: %1, %2"
+  },
+  "Battery: %1": {
+    "Battery: %1": "Batteria: %1"
+  },
+  "Signal: %1": {
+    "Signal: %1": "Segnale: %1"
+  },
+  "1 new notification": {
+    "1 new notification": "1 notifica nuova"
+  },
+  "%1 new notifications": {
+    "%1 new notifications": "%1 notifiche nuove"
+  },
+  "Status": {
+    "Status": "Stato"
+  },
+  "Notifications": {
+    "Notifications": "Notifiche"
+  },
+  "Player": {
+    "Player": "Player"
+  },
+  "Calls": {
+    "Calls": "Chiamate"
+  },
+  "Connected": {
+    "Connected": "Connesso"
+  },
+  "Disconnected": {
+    "Disconnected": "Disconnesso"
+  },
+  "Refresh": {
+    "Refresh": "Aggiorna"
+  },
+  "Title": {
+    "Title": "Titolo"
+  },
+  "Shown in the popup, the tooltip and the bar.": {
+    "Shown in the popup, the tooltip and the bar.": "Mostrato nel popup, nel suggerimento e nella barra."
+  },
+  "Bar items": {
+    "Bar items": "Elementi nella barra"
+  },
+  "Vertical bars show only the icons, the battery level and the notification count.": {
+    "Vertical bars show only the icons, the battery level and the notification count.": "Le barre verticali mostrano solo le icone, il livello della batteria e il numero di notifiche."
+  },
+  "Battery icon": {
+    "Battery icon": "Icona batteria"
+  },
+  "Battery percentage": {
+    "Battery percentage": "Percentuale batteria"
+  },
+  "Signal icon": {
+    "Signal icon": "Icona segnale"
+  },
+  "Signal percentage": {
+    "Signal percentage": "Percentuale segnale"
+  },
+  "Carrier": {
+    "Carrier": "Operatore"
+  },
+  "Now playing": {
+    "Now playing": "Brano in riproduzione"
+  },
+  "New notification count": {
+    "New notification count": "Contatore notifiche nuove"
+  },
+  "Popup tabs": {
+    "Popup tabs": "Schede del popup"
+  },
+  "Recent calls": {
+    "Recent calls": "Chiamate recenti"
+  },
+  "Status sections": {
+    "Status sections": "Sezioni dello stato"
+  },
+  "Battery": {
+    "Battery": "Batteria"
+  },
+  "Cellular network": {
+    "Cellular network": "Rete cellulare"
+  },
+  "Bluetooth": {
+    "Bluetooth": "Bluetooth"
+  },
+  "Clicking a notification": {
+    "Clicking a notification": "Clic su una notifica"
+  },
+  "Opens the app, or else its web version": {
+    "Opens the app, or else its web version": "Apre l'app, altrimenti la versione web"
+  },
+  "Opens the app only": {
+    "Opens the app only": "Apre solo l'app"
+  },
+  "Does nothing": {
+    "Does nothing": "Non fa niente"
+  },
+  "Look the artwork up online on iTunes": {
+    "Look the artwork up online on iTunes": "Cerca la copertina online su iTunes"
+  },
+  "The iPhone does not send artwork over Bluetooth. During AirPlay it comes from shairport-sync; otherwise the artist and title are looked up with the iTunes API.": {
+    "The iPhone does not send artwork over Bluetooth. During AirPlay it comes from shairport-sync; otherwise the artist and title are looked up with the iTunes API.": "Via Bluetooth l'iPhone non manda la copertina. Durante AirPlay arriva da shairport-sync; altrimenti si cerca artista e titolo sull'API di iTunes."
+  },
+  "Emoji font": {
+    "Emoji font": "Font delle emoji"
+  },
+  "For emoji in notifications, names and tracks; empty: the theme font.": {
+    "For emoji in notifications, names and tracks; empty: the theme font.": "Per le emoji in notifiche, nomi e brani; vuoto: il font del tema."
+  },
+  "The network type (LTE, 5G…) is not available: the iPhone's Bluetooth hands-free profile does not report it.": {
+    "The network type (LTE, 5G…) is not available: the iPhone's Bluetooth hands-free profile does not report it.": "Il tipo di rete (LTE, 5G…) non è disponibile: il profilo vivavoce Bluetooth dell'iPhone non lo trasmette."
+  },
+  "Untitled": {
+    "Untitled": "Senza titolo"
+  },
+  "Previous": {
+    "Previous": "Precedente"
+  },
+  "Pause": {
+    "Pause": "Pausa"
+  },
+  "Play": {
+    "Play": "Riproduci"
+  },
+  "Next": {
+    "Next": "Successivo"
+  },
+  "Volume down": {
+    "Volume down": "Abbassa il volume"
+  },
+  "Volume up": {
+    "Volume up": "Alza il volume"
+  },
+  "BlueFerry refused the command: %1": {
+    "BlueFerry refused the command: %1": "BlueFerry ha rifiutato il comando: %1"
+  },
+  "Nothing playing": {
+    "Nothing playing": "Niente in riproduzione"
+  },
+  "BlueFerry did not answer about the player.": {
+    "BlueFerry did not answer about the player.": "BlueFerry non ha risposto sul player."
+  },
+  "Media control is off in BlueFerry: “blueferry media enable”.": {
+    "Media control is off in BlueFerry: “blueferry media enable”.": "Il controllo dei media è spento in BlueFerry: «blueferry media enable»."
+  },
+  "The iPhone's player is not reachable (it needs the Bluetooth LE link).": {
+    "The iPhone's player is not reachable (it needs the Bluetooth LE link).": "Il player dell'iPhone non è raggiungibile (serve il collegamento Bluetooth LE)."
+  },
+  "Start music on the iPhone and it will show up here.": {
+    "Start music on the iPhone and it will show up here.": "Avvia la musica sull'iPhone e comparirà qui."
+  },
+  "Bluetooth LE, exact value": {
+    "Bluetooth LE, exact value": "Bluetooth LE, valore esatto"
+  },
+  "Bluetooth LE, through BlueZ": {
+    "Bluetooth LE, through BlueZ": "Bluetooth LE, tramite BlueZ"
+  },
+  "Hands-free, in 20 % steps": {
+    "Hands-free, in 20 % steps": "Vivavoce, a passi del 20 %"
+  },
+  "Wi-Fi calling": {
+    "Wi-Fi calling": "Chiamate Wi-Fi"
+  },
+  "%1/5": {
+    "%1/5": "%1/5"
+  },
+  "Updated at %1": {
+    "Updated at %1": "Aggiornato alle %1"
+  }
+}
